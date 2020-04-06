@@ -454,6 +454,10 @@ int main() {
 	float time = 0.0;
 	float previous = glfwGetTime();
 	
+	// New positions for dead reckoning
+	float tx2 = 0.0f;
+	float ty2 = 0.0f;
+
 	///// Game loop /////
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -504,7 +508,11 @@ int main() {
 
 		keyboard();
 
-		Model = glm::translate(Model, glm::vec3(tx, ty, -2.0f));
+		// Dead reckoning formula
+		tx2 = tx + (0.001f * previous);
+		ty2 = ty + (0.001f * previous);
+
+		Model = glm::translate(Model, glm::vec3(tx2, ty2, -2.0f));
 		mvp = Projection * View * Model;
 
 		glBindVertexArray(vao);
